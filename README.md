@@ -10,9 +10,8 @@ Aplicação web do Jogo da Velha desenvolvida como atividade prática de **Spec-
 
 ## 🔗 Link da Aplicação (GitHub Pages)
 
-> _[Cole aqui o link gerado pelo GitHub Pages após ativar em Settings → Pages → Branch: main → /src]_
+> _(https://tuex777ty-commits.github.io/Jogo-da-velha/)_
 >
-> Exemplo de formato: `https://<seu-usuario>.github.io/jogo-da-velha-unifor/`
 
 ---
 
