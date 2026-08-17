@@ -19,10 +19,10 @@ Aplicação web do Jogo da Velha desenvolvida como atividade prática de **Spec-
 
 ```
 jogo-da-velha-unifor/
-│   └── cdu_JogarJogodavelha.md   # Especificação (CDU) fornecida pela disciplina
-│   └── index.html                # Aplicação completa (HTML + CSS + JS)
-├── README.md                     # Este arquivo
-└── RELATORIO_PROMPTS.md          # Relatório de interação com a IA
+├── docs/cdu_JogarJogodavelha.md   # Especificação (CDU) fornecida pela disciplina
+├── src/index.html                 # Aplicação completa (HTML + CSS + JS)
+├── README.md                      # Este arquivo
+└── RELATORIO_PROMPTS.md           # Relatório de interação com a IA
 ```
 
 ---
