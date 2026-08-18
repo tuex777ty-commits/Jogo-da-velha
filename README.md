@@ -2,8 +2,7 @@
 
 Aplicação web do Jogo da Velha desenvolvida como atividade prática de **Spec-Driven Development** (Desenvolvimento Guiado por Requisitos), a partir do Caso de Uso (CDU) *"Jogar Jogo da Velha"* fornecido pela disciplina de Engenharia de Software / Desenvolvimento Web da Universidade de Fortaleza (UNIFOR).
 
-**Aluno:** Luis Gustavo
-**Matrícula:** _[preencher com sua matrícula]_
+**Aluno:** Luis Gustavo, Chagas filho, Francisco
 **Instituição:** Universidade de Fortaleza (UNIFOR)
 
 ---
