@@ -1,12 +1,12 @@
 # Relatório de Prompts — Jogo da Velha UNIFOR
 
-Aluno: Luis Gustavo, Chagas Filho, Francisco 
+Aluno: Luis Gustavo, Chagas filho, Francisco
 
 ## Como usei a IA
 
-Passei o enunciado da atividade praticamente igual ao que a professora/monitoria mandou, incluindo o link do CDU no GitHub do Prof. Bezerra. Pedi pra IA seguir o CDU como guia principal e montar o repositório já na estrutura exigida (docs/, src/, README.md, RELATORIO_PROMPTS.md). A IA foi lá, abriu o link do CDU, leu a especificação inteira e só depois começou a escrever o código — isso foi importante porque boa parte das regras (tempo de 400ms da CPU, 2 segundos de pausa entre rodadas, nomes exatos dos elementos de tela) só tavam no documento, não dava pra IA "chutar".
+Para essa atividade, criei um prompt próprio pra instruir a IA a construir o jogo inteiro a partir do CDU, em vez de ir pedindo pedaço por pedaço. Passei o enunciado da atividade praticamente igual ao que a professora/monitoria mandou, incluindo o link do CDU no GitHub do Prof. Bezerra, e pedi pra IA seguir esse documento como guia principal e montar o repositório já na estrutura exigida (docs/, src/, README.md, RELATORIO_PROMPTS.md). A IA foi lá, abriu o link do CDU, leu a especificação inteira e só depois começou a escrever o código — isso foi importante porque boa parte das regras (tempo de 400ms da CPU, 2 segundos de pausa entre rodadas, nomes exatos dos elementos de tela) só tavam no documento, não dava pra IA "chutar".
 
-### Prompt 1 (o principal, que gerou a primeira versão)
+### Prompt 1 — o que criei pra gerar o jogo
 
 "Construir a aplicação web do Jogo da Velha da UNIFOR utilizando como guia soberano a Especificação de Caso de Uso (CDU) disponibilizada [link]. Formato de entrega: link do repositório GitHub, com estrutura docs/, src/, README.md e RELATORIO_PROMPTS.md."
 
