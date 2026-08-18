@@ -1,8 +1,6 @@
 # Relatório de Prompts — Jogo da Velha UNIFOR
 
-Aluno: Luis Gustavo
-Matrícula: [preencher]
-IA utilizada: Claude (Anthropic)
+Aluno: Luis Gustavo, Chagas Filho, Francisco 
 
 ## Como usei a IA
 
