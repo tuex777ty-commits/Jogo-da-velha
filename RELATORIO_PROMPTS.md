@@ -1,88 +1,56 @@
-# 📋 Relatório de Interação com IA — Spec-Driven Development
+# Relatório de Prompts — Jogo da Velha UNIFOR
 
-**Atividade:** Jogo da Velha Web — UNIFOR
-**Disciplina:** Engenharia de Software / Desenvolvimento Web
-**Ferramenta de IA utilizada:** Claude (Anthropic) — via Claude.ai
+Aluno: Luis Gustavo
+Matrícula: [preencher]
+IA utilizada: Claude (Anthropic)
 
----
+## Como usei a IA
 
-## 1. Papel do Aluno no Processo
+Passei o enunciado da atividade praticamente igual ao que a professora/monitoria mandou, incluindo o link do CDU no GitHub do Prof. Bezerra. Pedi pra IA seguir o CDU como guia principal e montar o repositório já na estrutura exigida (docs/, src/, README.md, RELATORIO_PROMPTS.md). A IA foi lá, abriu o link do CDU, leu a especificação inteira e só depois começou a escrever o código — isso foi importante porque boa parte das regras (tempo de 400ms da CPU, 2 segundos de pausa entre rodadas, nomes exatos dos elementos de tela) só tavam no documento, não dava pra IA "chutar".
 
-Nesta atividade, atuei como **Engenheiro de Prompts e Auditor de Qualidade**: instruí a IA a partir do CDU oficial (`docs/cdu_JogarJogodavelha.md`) e sou responsável por validar, testar e garantir que a aplicação final atenda a 100% dos requisitos e critérios de aceite descritos no artefato.
+### Prompt 1 (o principal, que gerou a primeira versão)
 
-> ⚠️ **Nota de responsabilidade:** este relatório documenta o prompt principal enviado à IA e a análise de conformidade realizada com base na leitura do código gerado. Antes da entrega, é essencial que eu **abra `src/index.html` no navegador e teste manualmente cada critério de aceite (CA-01 a CA-07)**, registrando abaixo quaisquer ajustes que eu próprio tenha solicitado após esse teste.
+"Construir a aplicação web do Jogo da Velha da UNIFOR utilizando como guia soberano a Especificação de Caso de Uso (CDU) disponibilizada [link]. Formato de entrega: link do repositório GitHub, com estrutura docs/, src/, README.md e RELATORIO_PROMPTS.md."
 
----
+A partir disso a IA já entregou o `index.html` completo com HTML+CSS+JS num arquivo só, o CDU salvo em docs/, e o README com instruções de execução.
 
-## 2. Prompt Principal Utilizado
+### Prompt 2 (correção de bug)
 
-```
-Construir a aplicação web do Jogo da Velha da UNIFOR utilizando como guia
-soberano a Especificação de Caso de Uso (CDU) disponível em:
-https://github.com/ProfBezerra/LAPIS/blob/main/Requisitos/Artefatos/Exemplos/cdu_JogarJogodavelha.md
+Depois de gerar o app, testei jogando uma partida no navegador e forcei uma vitória do jogador O na coluna do meio. A linha laranja que devia passar em cima dos "O" apareceu deslocada pra esquerda, cobrindo uma faixa vazia do tabuleiro em vez dos símbolos. Tirei um print e mandei pra IA: "quero que a linha fique em cima dos números".
 
-Requisitos de entrega:
-- Repositório com estrutura docs/, src/, README.md, RELATORIO_PROMPTS.md
-- src/index.html: HTML + CSS + JS em arquivo único, sem dependências externas
-- Seguir fielmente fluxo principal, fluxos alternativos (A1, A2, A3) e
-  fluxo de exceção (E1) do CDU
-- Atender aos critérios de aceite CA-01 a CA-07
-```
+A IA me explicou o motivo do erro: o cálculo da linha de vitória usava um deslocamento fixo de -17px no eixo X pra dar aquela "sobra" nas pontas da linha (pra ela passar um pouco além do centro da primeira e da última célula). Isso funcionava certo quando a vitória era numa linha horizontal, porque nesse caso o deslocamento coincidia com a própria direção da linha. Mas numa vitória em coluna (vertical), esse mesmo deslocamento em X só empurrava a linha inteira pro lado, já que a direção real da linha ali é no eixo Y, não no X.
 
-A IA foi instruída a buscar o conteúdo integral do CDU na URL fornecida antes de escrever qualquer código, para garantir fidelidade à especificação (nomes de variáveis do dicionário de dados, paleta de cores institucional, textos exatos de UI, tempos de espera de 400ms para a CPU e 2s para transição de rodada, etc.).
+A correção que a IA aplicou foi trocar aquele deslocamento fixo por um cálculo vetorial: agora ela pega a direção real entre o centro da primeira e da última célula vencedora (funciona pra linha, coluna e diagonal) e estende a "sobra" das pontas nessa direção, não mais fixo em X. Testei de novo depois do ajuste e a linha ficou certinha em cima dos símbolos, tanto em coluna quanto testei depois em diagonal.
 
----
+### Prompt 3
 
-## 3. Estratégia de Auditoria Aplicada
+Pedi pra deixar a árvore de diretórios do README com as linhas retas (mesmo estilo `├──`/`└──` que já tava sendo usado pras outras entradas), porque o jeito anterior tava com uma ramificação aninhada (`│   └──`) que ficava com visual diferente do resto. Foi só ajuste de formatação no Markdown, sem mudança de código.
 
-Ao invés de aceitar o código gerado sem revisão, conferi cada trecho do `src/index.html` contra a seção correspondente do CDU:
+## Erros que a IA cometeu e como corrigi
 
-| Seção do CDU auditada | O que foi verificado no código |
-| --- | --- |
-| Fluxo Principal (P1–P7) | Sequência exata: clique → preenche célula → toca som → avalia tabuleiro → alterna turno → atualiza status |
-| A1 (Vitória) | Linha traçada sobre as 3 células, confetes, acorde sonoro, incremento de placar, regras de MD3 |
-| A2 (CPU) | Bloqueio de cliques, atraso de 400ms, jogada em posição vazia |
-| A3 (Reinício) | Zeragem de placar/rodadas ao clicar em "Reiniciar" **ou** ao trocar qualquer seletor |
-| E1 (Empate) | Som descendente, mensagem "Rodada Empatada!", reinício sem incrementar rodada em MD3 |
-| Dicionário de Dados (seção 18) | Nomes de variáveis (`options`, `currentPlayer`, `running`, `winsX`, `winsO`, `currentRound`, `modeSelect`, `formatSelect`) usados literalmente no JS |
-| Interface Visual (UI-01 a UI-11) | Todos os 11 elementos presentes e com o comportamento descrito na tabela |
+| O que aconteceu | Onde eu percebi | Como pedi pra corrigir |
+|---|---|---|
+| Linha de vitória desalinhada em vitórias verticais (deslocamento fixo em X aplicado igual pra qualquer ângulo) | Testando manualmente uma vitória de coluna e comparando com o print | Mandei o print e descrevi o problema ("quero que a linha fique em cima dos números"); a IA identificou a causa raiz e reescreveu o cálculo usando vetor de direção |
+| Árvore de diretórios do README com estilo inconsistente (aninhada em vez de reta) | Comparação visual direta com o resto do arquivo | Pedi pra deixar igual às outras linhas |
 
----
+## Testes que fiz manualmente antes de considerar pronto
 
-## 4. Pontos de Atenção Identificados na Revisão
+- Vitória em linha horizontal (topo, meio, base) — ok
+- Vitória em coluna (depois do fix) — ok, linha em cima dos símbolos
+- Vitória em diagonal — ok
+- Empate (9 células preenchidas sem vencedor) — mensagem "Rodada Empatada!" aparece e some o clique nas células
+- Trocar pra "Contra o Computador" no meio de uma partida — zera o placar e a CPU já joga sozinha na vez do O
+- Melhor de 3 — o placar acumula entre rodadas e o jogo só declara campeão com 2 vitórias ou depois da 3ª rodada
+- Clicar em "Reiniciar Jogo" no meio de uma rodada — zera tudo e volta pro X
 
-Durante a auditoria do código gerado contra o CDU, os seguintes pontos exigiram atenção redobrada (e foram corrigidos/confirmados na versão final):
+## Autoavaliação dos critérios de aceite
 
-1. **Cálculo geométrico da linha de vitória (UI-10):** o CDU não especifica a fórmula exata; foi necessário garantir, via `getBoundingClientRect()`, que a linha cobrisse precisamente o centro das 3 células vencedoras em qualquer tamanho de tela — validar visualmente em resoluções diferentes (CA-06).
-2. **Regra do MD3 combinada com empate (E1.4):** o CDU determina que, em caso de empate no formato MD3 com rodada < 3, o placar de rodada **não** é incrementado — isso foi implementado separadamente da lógica de vitória (A1.7.2, que incrementa) para não confundir os dois fluxos.
-3. **Nomenclatura do Jogador O em modo CPU:** o CDU (UI-03) menciona que o rótulo do "Jogador O" deve mudar ao selecionar o modo CPU — implementado trocando dinamicamente o texto para "Computador" no placar e nas mensagens de status.
-4. **Autonomia total de áudio (CA-07):** confirmado que nenhum `<audio>`, arquivo `.mp3/.wav` ou CDN de som é referenciado — toda a sintetização usa `OscillatorNode`/`GainNode` nativos do navegador.
-
-**➡️ Espaço para o aluno preencher após teste manual:**
-_(Registre aqui quaisquer bugs encontrados ao testar no navegador e como foram corrigidos — ex.: "a linha de vitória ficou desalinhada em tela muito estreita, corrigi solicitando à IA recalcular a margem da linha.")_
-
-- ...
-
----
-
-## 5. Tabela de Autoavaliação — Critérios de Aceite (CA-01 a CA-07)
-
-| Critério | Descrição | Status | Evidência no Código |
-| --- | --- | :---: | --- |
-| **CA-01** | Paleta institucional UNIFOR (`#003366`, `#0056b3`) + subtítulo "UNIVERSIDADE DE FORTALEZA" | ✅ | Variáveis CSS `--azul-unifor`, `--azul-destaque`; elemento `.subtitulo-institucional` |
-| **CA-02** | Impossível sobrescrever célula já preenchida | ✅ | `if (options[index] !== '') return;` em `onCelulaClicada` |
-| **CA-03** | Tabuleiro bloqueia cliques após fim de rodada até próxima rodada/reinício | ✅ | `running = false` em `tratarFimDeRodadaPorVitoria` e `tratarFimDeRodadaPorEmpate`, verificado em `onCelulaClicada` |
-| **CA-04** | CPU joga automaticamente na vez do 'O' após pausa | ✅ | `jogadaDaCpu()` com `setTimeout(..., 400)` disparado em P6/P7 |
-| **CA-05** | MD3 zera tabuleiro entre rodadas; encerra com 2 vitórias ou após a 3ª rodada | ✅ | `tratarFimDeRodadaPorVitoria` → bloco `if (formatSelect === 'bo3')` com checagem `winsX >= 2 \|\| winsO >= 2` e `currentRound < 3` |
-| **CA-06** | Linha traçada exatamente sobre as 3 células vitoriosas + confetes disparados | ✅ | `tracarLinhaVitoria()` via `getBoundingClientRect()`; `dispararConfetes()` via `<canvas>` |
-| **CA-07** | Efeitos sonoros sem downloads/arquivos externos | ✅ | Todas as funções de som (`tocarTom`, `somJogadaX`, `somJogadaO`, `somVitoria`, `somEmpate`) usam exclusivamente `AudioContext` nativo |
-
-**Legenda:** ✅ Atendido | ⚠️ Atendido parcialmente | ❌ Não atendido
-
-> Recomenda-se que, antes da entrega final, cada linha desta tabela seja reconfirmada manualmente no navegador (clicar em cada célula, forçar vitórias em cada modo/formato, forçar empates, testar o botão Reiniciar e a troca de seletores em pleno jogo) e que o status seja atualizado caso algum comportamento divirja do esperado.
-
----
-
-## 6. Conclusão
-
-O processo de Spec-Driven Development permitiu traduzir diretamente os passos numerados do CDU (P1–P7, A1–A3, E1) em funções JavaScript nomeadas de forma rastreável (`tratarFimDeRodadaPorVitoria`, `tratarFimDeRodadaPorEmpate`, `jogadaDaCpu`, `reiniciarPartida`), facilitando a auditoria de conformidade linha a linha entre requisito e implementação.
+| Critério | Atendido? | Observação |
+|---|---|---|
+| CA-01 — Paleta institucional + subtítulo UNIVERSIDADE DE FORTALEZA | Sim | Cores `#003366` e `#0056b3` usadas no cabeçalho e nos elementos de destaque |
+| CA-02 — Não sobrescreve célula ocupada | Sim | Testei clicando várias vezes na mesma célula |
+| CA-03 — Bloqueia cliques depois de fim de rodada | Sim | Testei clicar rápido depois de uma vitória, não registra jogada |
+| CA-04 — CPU joga sozinha na vez do O | Sim | Tem uma pausa perceptível antes da jogada da CPU |
+| CA-05 — Regra do Melhor de 3 | Sim | Testei até o fim de uma partida completa |
+| CA-06 — Linha de vitória em cima das células + confetes | Sim (depois da correção) | Ver seção de erros corrigidos acima |
+| CA-07 — Áudio sem arquivo externo | Sim | Não tem nenhum `<audio>` nem link de mp3 no código, os sons são gerados na hora |
